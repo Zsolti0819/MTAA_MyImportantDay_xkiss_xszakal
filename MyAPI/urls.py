@@ -6,8 +6,9 @@ from django.urls import path
 urlpatterns = [
     path('register/', views.registerUser, name='register'),
     path('login/', obtain_auth_token, name='login'),
-    path('properties/', views.showProperties, name='properties'),
-    path('properties/update', views.changeProperties, name='update'),
+    path('logout/', views.logoutUser, name='logout'),
+    path('account/', views.showAccountInfo, name='properties'),
+    path('account-update/', views.updateAccount, name='update'),
     path('event-list/', views.showAllEvents, name="event-list"),
     path('event/<str:pk>/', views.showEventDetails, name="event-detail"),
     path('event-create/', views.createEvent, name="event-create"),

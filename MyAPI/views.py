@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
@@ -30,11 +31,21 @@ def registerUser(request):
     return Response(data)
 
 
-# Vlastnosti účtu
+# Odhlásenie sa
+@api_view(['POST'])
+def logoutUser(request):
+    try:
+        request.user.auth_token.delete()
+        return Response({"response": "Successfully logged out."}, status=status.HTTP_200_OK)
+    except (AttributeError, ObjectDoesNotExist):
+        return Response({"response": "No token was provided."}, status=status.HTTP_412_PRECONDITION_FAILED)
+
+
+# Informácie o účte
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def showProperties(request):
+def showAccountInfo(request):
     try:
         account = request.user
     except Account.DoesNotExist:
@@ -47,18 +58,16 @@ def showProperties(request):
 @api_view(['PUT'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def changeProperties(request):
+def updateAccount(request):
     try:
         account = request.user
     except Account.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
     serializer = AccountPropertiesSerializer(account, data=request.data)
-    data = {}
     serializer.is_valid(raise_exception=True)
     serializer.save()
-    data["response"] = "Account update success"
-    return Response(data=data)
-    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.data)  # HTTP STATUS CODE 200
 
 
 # Zobraziť všetky udalosti
@@ -66,11 +75,10 @@ def changeProperties(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def showAllEvents(request):
-
     user = request.user
     event = Event.objects.filter(userID=user.id).order_by('-id')
     serializer = EventSerializer(event, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data)  # HTTP STATUS CODE 200
 
 
 # Zobraziť konkrétnu udalosť
@@ -81,15 +89,15 @@ def showEventDetails(request, pk):
     try:
         event = Event.objects.get(id=pk)
     except Event.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"response": "The requested event does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
     user = request.user
     if event.userID != user.id:
-        return Response({"response": "You don't have the permission to view these events."})
-
+        return Response({"response": "You don't have the permission to view this event."},
+                        status=status.HTTP_401_UNAUTHORIZED)
 
     serializer = EventSerializer(event, many=False)
-    return Response(serializer.data)
+    return Response(serializer.data)  # HTTP STATUS CODE 200
 
 
 # Vytvoriť udalosť
@@ -97,15 +105,15 @@ def showEventDetails(request, pk):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def createEvent(request):
-    serializer = EventSerializer(data=request.data)
     user = request.user
     values = request.POST.copy()
     values["userID"] = user.id
+    serializer = EventSerializer(data=values)
 
-    if serializer.is_valid():
-        serializer.save()
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
 
-    return Response(serializer.data)
+    return Response(serializer.data)  # HTTP STATUS CODE 200
 
 
 # Zmeniť udalosť
@@ -116,18 +124,19 @@ def updateEvent(request, pk):
     try:
         event = Event.objects.get(id=pk)
     except Event.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"response": "The requested event does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
     user = request.user
     if event.userID != user.id:
-        return Response({"response": "You don't have the permission to edit that event."})
+        return Response({"response": "You don't have the permission to edit this event."},
+                        status=status.HTTP_401_UNAUTHORIZED)
 
     serializer = EventSerializer(instance=event, data=request.data)
 
-    if serializer.is_valid():
-        serializer.save()
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
 
-    return Response(serializer.data)
+    return Response(serializer.data)  # HTTP STATUS CODE 200
 
 
 # Odstrániť udalosť
@@ -135,7 +144,15 @@ def updateEvent(request, pk):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def deleteEvent(request, pk):
-    event = Event.objects.get(id=pk)
-    event.delete()
+    try:
+        event = Event.objects.get(id=pk)
+    except Event.DoesNotExist:
+        return Response({"response": "The requested event does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
-    return Response('Event succesfully deleted!')
+    user = request.user
+    if event.userID != user.id:
+        return Response({"response": "You don't have the permission to delete this event."},
+                        status=status.HTTP_401_UNAUTHORIZED)
+
+    event.delete()
+    return Response({"response": "The event was successfully deleted."}, status=status.HTTP_200_OK)

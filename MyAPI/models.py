@@ -10,7 +10,6 @@ from rest_framework.authtoken.models import Token
 
 
 class Event(models.Model):
-    # id = models.IntegerField()
     userID = models.IntegerField(null=True)
     subject = models.CharField(max_length=200)
     date = models.DateField(default=datetime.date.today())
@@ -21,9 +20,8 @@ class Event(models.Model):
     CRITICAL = '3'
     priorityChoices = [(NORMAL, 'Normal'), (IMPORTANT, 'Important'), (CRITICAL, 'Critical'), ]
     priority = models.CharField(max_length=1, choices=priorityChoices, default=NORMAL)
-
-    # advanced = models.CharField(max_length=200, blank=True)
-    # photo = models.BinaryField(blank=True)
+    advanced = models.CharField(max_length=500, blank=True)
+    pic = models.ImageField(upload_to='pics', blank=True)
 
     def __str__(self):
         return self.subject
