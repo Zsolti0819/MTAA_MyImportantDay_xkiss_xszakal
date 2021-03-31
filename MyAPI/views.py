@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
@@ -38,8 +37,8 @@ def logoutUser(request):
     try:
         request.user.auth_token.delete()
         return Response({"response": "Successfully logged out."}, status=status.HTTP_200_OK)
-    except (AttributeError, ObjectDoesNotExist):
-        return Response({"response": "No token was provided."}, status=status.HTTP_412_PRECONDITION_FAILED)
+    except AttributeError:
+        return Response({"response": "No token was provided."}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 # Informácie o účte
@@ -49,7 +48,7 @@ def logoutUser(request):
 def showAccountInfo(request):
     try:
         account = request.user
-    except Account.DoesNotExist:
+    except (Account.DoesNotExist, AttributeError):
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = AccountPropertiesSerializer(account)
     return Response(serializer.data)
