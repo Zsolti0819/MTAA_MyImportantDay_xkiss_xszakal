@@ -9,24 +9,6 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 
-class Event(models.Model):
-    userID = models.IntegerField(null=True)
-    subject = models.CharField(max_length=200)
-    date = models.DateField(default=datetime.date.today())
-    place = models.CharField(max_length=200)
-
-    NORMAL = '1'
-    IMPORTANT = '2'
-    CRITICAL = '3'
-    priorityChoices = [(NORMAL, 'Normal'), (IMPORTANT, 'Important'), (CRITICAL, 'Critical'), ]
-    priority = models.CharField(max_length=1, choices=priorityChoices, default=NORMAL)
-    advanced = models.CharField(max_length=500, blank=True)
-    pic = models.ImageField(upload_to='pics', blank=True)
-
-    def __str__(self):
-        return self.subject
-
-
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, username, password=None):
         if not email:
@@ -75,6 +57,24 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Event(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=200)
+    date = models.DateField(default=datetime.date.today())
+    place = models.CharField(max_length=200)
+
+    NORMAL = '1'
+    IMPORTANT = '2'
+    CRITICAL = '3'
+    priorityChoices = [(NORMAL, 'Normal'), (IMPORTANT, 'Important'), (CRITICAL, 'Critical'), ]
+    priority = models.CharField(max_length=1, choices=priorityChoices, default=NORMAL)
+    advanced = models.CharField(max_length=500, blank=True)
+    pic = models.ImageField(null=True, blank=True, upload_to="images/")
+
+    def __str__(self):
+        return self.subject
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

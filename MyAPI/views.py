@@ -76,7 +76,7 @@ def updateAccount(request):
 @permission_classes([IsAuthenticated])
 def showAllEvents(request):
     user = request.user
-    event = Event.objects.filter(userID=user.id).order_by('-id')
+    event = Event.objects.filter(user=user.id).order_by('-id')
     serializer = EventSerializer(event, many=True)
     return Response(serializer.data)  # HTTP STATUS CODE 200
 
@@ -92,7 +92,7 @@ def showEventDetails(request, pk):
         return Response({"response": "The requested event does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
     user = request.user
-    if event.userID != user.id:
+    if event.user.id != user.id:
         return Response({"response": "You don't have the permission to view this event."},
                         status=status.HTTP_401_UNAUTHORIZED)
 
@@ -107,7 +107,7 @@ def showEventDetails(request, pk):
 def createEvent(request):
     user = request.user
     values = request.POST.copy()
-    values["userID"] = user.id
+    values["user"] = user.id
     serializer = EventSerializer(data=values)
 
     serializer.is_valid(raise_exception=True)
@@ -127,11 +127,14 @@ def updateEvent(request, pk):
         return Response({"response": "The requested event does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
     user = request.user
-    if event.userID != user.id:
+    if event.user.id != user.id:
         return Response({"response": "You don't have the permission to edit this event."},
                         status=status.HTTP_401_UNAUTHORIZED)
 
-    serializer = EventSerializer(instance=event, data=request.data)
+    values = request.POST.copy()
+    values["user"] = event.user.id
+    serializer = EventSerializer(instance=event, data=values)
+
 
     serializer.is_valid(raise_exception=True)
     serializer.save()
@@ -150,7 +153,7 @@ def deleteEvent(request, pk):
         return Response({"response": "The requested event does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
     user = request.user
-    if event.userID != user.id:
+    if event.user.id != user.id:
         return Response({"response": "You don't have the permission to delete this event."},
                         status=status.HTTP_401_UNAUTHORIZED)
 
