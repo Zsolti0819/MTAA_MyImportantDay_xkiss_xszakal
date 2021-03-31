@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Event, Account
-from .serializers import AccountPropertiesSerializer
+from .serializers import AccountPropertiesSerializer, ChangePasswordSerializer
 from .serializers import EventSerializer
 from .serializers import RegisterSerializer
 
@@ -55,11 +55,11 @@ def showAccountInfo(request):
     return Response(serializer.data)
 
 
-# Zmeniť vlastnosti v účte
+# Zmeniť username alebo email k účtu
 @api_view(['PUT'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def updateAccount(request):
+def changeUsernameOrEmail(request):
     try:
         account = request.user
     except Account.DoesNotExist:
@@ -68,7 +68,29 @@ def updateAccount(request):
     serializer = AccountPropertiesSerializer(account, data=request.data)
     serializer.is_valid(raise_exception=True)
     serializer.save()
-    return Response(serializer.data)  # HTTP STATUS CODE 200
+    return Response(serializer.data)
+
+
+# Zmeniť heslo k účtu
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def changePassword(request):
+    try:
+        account = request.user
+    except Account.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ChangePasswordSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    if not account.check_password(serializer.data.get("old_password")):
+        return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+
+    account.set_password(serializer.data.get("new_password"))
+    account.save()
+
+    return Response({"response": "The password was updated."}, status=status.HTTP_200_OK)
 
 
 # Zobraziť všetky udalosti
@@ -79,7 +101,7 @@ def showAllEvents(request):
     user = request.user
     event = Event.objects.filter(user=user.id).order_by('-id')
     serializer = EventSerializer(event, many=True)
-    return Response(serializer.data)  # HTTP STATUS CODE 200
+    return Response(serializer.data)
 
 
 # Zobraziť konkrétnu udalosť
@@ -98,7 +120,7 @@ def showEventDetails(request, pk):
                         status=status.HTTP_401_UNAUTHORIZED)
 
     serializer = EventSerializer(event, many=False)
-    return Response(serializer.data)  # HTTP STATUS CODE 200
+    return Response(serializer.data)
 
 
 # Vytvoriť udalosť
@@ -121,7 +143,7 @@ def createEvent(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
 
-    return Response(serializer.data)  # HTTP STATUS CODE 200
+    return Response(serializer.data)
 
 
 # Zmeniť udalosť
@@ -151,7 +173,7 @@ def updateEvent(request, pk):
     serializer.is_valid(raise_exception=True)
     serializer.save()
 
-    return Response(serializer.data)  # HTTP STATUS CODE 200
+    return Response(serializer.data)
 
 
 # Odstrániť udalosť
@@ -170,4 +192,4 @@ def deleteEvent(request, pk):
                         status=status.HTTP_401_UNAUTHORIZED)
 
     event.delete()
-    return Response({"response": "The event was successfully deleted."}, status=status.HTTP_200_OK)
+    return Response({"response": "The event was deleted."}, status=status.HTTP_200_OK)

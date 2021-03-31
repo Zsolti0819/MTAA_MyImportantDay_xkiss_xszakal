@@ -33,3 +33,11 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = "__all__"
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    class Meta:
+        model = Account
+
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
