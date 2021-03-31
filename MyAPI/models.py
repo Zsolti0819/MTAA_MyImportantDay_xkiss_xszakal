@@ -1,9 +1,6 @@
-import datetime
-
+from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.db import models
-
-from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
@@ -44,8 +41,7 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'username'
 
     objects = MyAccountManager()
 
@@ -62,7 +58,7 @@ class Account(AbstractBaseUser):
 class Event(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
     subject = models.CharField(max_length=200)
-    date = models.DateField(default=datetime.date.today())
+    date = models.DateTimeField()
     place = models.CharField(max_length=200)
 
     NORMAL = '1'

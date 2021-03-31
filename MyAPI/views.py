@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
@@ -7,9 +8,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Event, Account
+from .serializers import AccountPropertiesSerializer
 from .serializers import EventSerializer
 from .serializers import RegisterSerializer
-from .serializers import AccountPropertiesSerializer
 
 
 # Registrácia
@@ -107,7 +108,14 @@ def showEventDetails(request, pk):
 def createEvent(request):
     user = request.user
     values = request.POST.copy()
+
+    try:
+        pic = request.FILES["pic"]
+    except MultiValueDictKeyError:
+        pic = None
+
     values["user"] = user.id
+    values["pic"] = pic
     serializer = EventSerializer(data=values)
 
     serializer.is_valid(raise_exception=True)
@@ -132,9 +140,13 @@ def updateEvent(request, pk):
                         status=status.HTTP_401_UNAUTHORIZED)
 
     values = request.POST.copy()
+    try:
+        pic = request.FILES["pic"]
+    except MultiValueDictKeyError:
+        pic = None
     values["user"] = event.user.id
+    values["pic"] = pic
     serializer = EventSerializer(instance=event, data=values)
-
 
     serializer.is_valid(raise_exception=True)
     serializer.save()
