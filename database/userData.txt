@@ -1,0 +1,14 @@
+username:	FirstUser
+password:	password
+
+username:	SecondUser
+password:	heslo
+
+username:	ThirdUser
+password:	password
+
+username:	FourthUser
+password:	heslo
+
+username:	FifthUser
+password:	password
