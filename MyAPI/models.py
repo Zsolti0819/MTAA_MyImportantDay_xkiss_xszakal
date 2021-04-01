@@ -19,6 +19,10 @@ class MyAccountManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, username, password):
+        if not email:
+            raise ValueError("Users must have an email address")
+        if not username:
+            raise ValueError("Users must have an email username")
         user = self.create_user(
             email=self.normalize_email(email),
             password=password,
@@ -42,6 +46,7 @@ class Account(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     objects = MyAccountManager()
 
@@ -65,7 +70,7 @@ class Event(models.Model):
     IMPORTANT = '2'
     CRITICAL = '3'
     priorityChoices = [(NORMAL, 'Normal'), (IMPORTANT, 'Important'), (CRITICAL, 'Critical'), ]
-    priority = models.CharField(max_length=1, choices=priorityChoices, default=NORMAL)
+    priority = models.CharField(max_length=1, choices=priorityChoices)
     advanced = models.CharField(max_length=500, blank=True)
     pic = models.ImageField(null=True, blank=True, upload_to="images/")
 

@@ -54,22 +54,6 @@ def showAccountInfo(request):
     return Response(serializer.data)
 
 
-# Zmeniť username alebo email k účtu
-@api_view(['PUT'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def changeUsernameOrEmail(request):
-    try:
-        account = request.user
-    except Account.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    serializer = AccountPropertiesSerializer(account, data=request.data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response(serializer.data)
-
-
 # Zmeniť heslo k účtu
 @api_view(['PUT'])
 @authentication_classes([TokenAuthentication])
@@ -92,33 +76,19 @@ def changePassword(request):
     return Response({"response": "The password was updated."}, status=status.HTTP_200_OK)
 
 
-# Zobraziť všetky udalosti
-@api_view(['GET'])
+# Zmeniť username alebo email k účtu
+@api_view(['PUT'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def showAllEvents(request):
-    user = request.user
-    event = Event.objects.filter(user=user.id).order_by('-id')
-    serializer = EventSerializer(event, many=True)
-    return Response(serializer.data)
-
-
-# Zobraziť konkrétnu udalosť
-@api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def showEventDetails(request, pk):
+def changeUsernameAndEmail(request):
     try:
-        event = Event.objects.get(id=pk)
-    except Event.DoesNotExist:
-        return Response({"response": "The requested event does not exist."}, status=status.HTTP_404_NOT_FOUND)
+        account = request.user
+    except Account.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    user = request.user
-    if event.user.id != user.id:
-        return Response({"response": "You don't have the permission to view this event."},
-                        status=status.HTTP_401_UNAUTHORIZED)
-
-    serializer = EventSerializer(event, many=False)
+    serializer = AccountPropertiesSerializer(account, data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
     return Response(serializer.data)
 
 
@@ -142,6 +112,36 @@ def createEvent(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
 
+    return Response(serializer.data)
+
+
+# Zobraziť všetky udalosti
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def showAllEvents(request):
+    user = request.user
+    event = Event.objects.filter(user=user.id).order_by('-id')
+    serializer = EventSerializer(event, many=True)
+    return Response(serializer.data)
+
+
+# Zobraziť konkrétnu udalosť
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def showEventByID(request, pk):
+    try:
+        event = Event.objects.get(id=pk)
+    except Event.DoesNotExist:
+        return Response({"response": "The requested event does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
+    user = request.user
+    if event.user.id != user.id:
+        return Response({"response": "You don't have the permission to view this event."},
+                        status=status.HTTP_401_UNAUTHORIZED)
+
+    serializer = EventSerializer(event, many=False)
     return Response(serializer.data)
 
 
