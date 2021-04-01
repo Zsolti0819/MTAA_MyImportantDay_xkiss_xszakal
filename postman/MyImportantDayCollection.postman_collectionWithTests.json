@@ -1,0 +1,1134 @@
+{
+	"info": {
+		"_postman_id": "ea1332a0-6d0c-4c20-b011-e51805c5a00f",
+		"name": "MyImportantDayCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"Body matches Successful registration\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"response\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Successful registration!\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Status code name is Bad Request\", function () {\r",
+							"    pm.response.to.have.status(\"Bad Request\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"already used email\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"account with this email already exists.\");\r",
+							"});\r",
+							"pm.test(\"already used username\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"account with this username already exists.\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Invalid email format\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Enter a valid email address.\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Email field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"Username field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"Password field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"Password field required\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"Username field required\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"Password field required\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "a",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "b@",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "av",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/register/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log in user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"Body matches string token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 400 Bad Request\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Status code name is Bad Request\", function () {\r",
+							"    pm.response.to.have.status(\"Bad Request\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Username field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"Password field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"User not found/ not exist\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"non_field_errors\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Unable to log in with provided credentials.\");\r",
+							"});\r",
+							"pm.test(\"Username field required\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"Password field required\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "ab",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "av",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/login/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log out user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Successfull logout\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"response\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Successfully logged out.\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 400 Bad Request\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Status code name has Bad Request\", function () {\r",
+							"    pm.response.to.have.status(\"Bad Request\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Status code name has Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(\"Unauthorized\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Unauthorized logout\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token header. No credentials provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string invalid token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token ef93b2fa47db328c2243a49a4c57891e67037bb9",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/logout/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"logout",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View user account info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Successfull response\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Status code name has Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(\"Unauthorized\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Unauthorized No credentials\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token header. No credentials provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string invalid token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/account/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"account",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change user password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Successfull response\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"response\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"The password was updated.\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Status code name has Bad Request\", function () {\r",
+							"    pm.response.to.have.status(\"Bad Request\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Status code name has Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(\"Unauthorized\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Unauthorized No credentials\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token header. No credentials provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string invalid token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token.\");\r",
+							"});\r",
+							"pm.test(\"old_password field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"old_password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"new_password field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"new_password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"Wrong password\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"old_password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Wrong password.\");\r",
+							"});\r",
+							"pm.test(\"old_password field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"old_password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"new_password field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"new_password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"\r",
+							"//5e1ff8425fbd57f622a28d795f0438c8c711aa88"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 5e1ff8425fbd57f622a28d795f0438c8c711aa88",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "old_password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "new_password",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/account/password/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"account",
+						"password",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change username or email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Successfull change\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Status code name has Bad Request\", function () {\r",
+							"    pm.response.to.have.status(\"Bad Request\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Status code name has Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(\"Unauthorized\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Unauthorized No credentials\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token header. No credentials provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string invalid token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token.\");\r",
+							"});\r",
+							"pm.test(\"username field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"email field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"Invalid email format\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Enter a valid email address.\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Wrong password\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"old_password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Wrong password.\");\r",
+							"});\r",
+							"pm.test(\"old_password field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"old_password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"new_password field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"new_password\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 5e1ff8425fbd57f622a28d795f0438c8c711aa88",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "aa",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "aa@a.co",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/account/properties/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"account",
+						"properties",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create an event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"event created\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"subject\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"date\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"place\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"priority\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"advanced\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"pic\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"user\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Status code name has Bad Request\", function () {\r",
+							"    pm.response.to.have.status(\"Bad Request\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Status code name has Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(\"Unauthorized\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Subject field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"subject\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"Date field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"date\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"Place field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"place\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"Priority field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"priority\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Unauthorized No credentials\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token header. No credentials provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string invalid token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token.\");\r",
+							"});\r",
+							"pm.test(\"subject field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"subject\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"date field wrong format\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"date\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Datetime has wrong format. Use one of these formats instead: YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z].\");\r",
+							"});\r",
+							"pm.test(\"place field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"place\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"priority field not valid value\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"priority\");\r",
+							"    pm.expect(pm.response.text()).to.include(\" is not a valid choice.\");\r",
+							"});\r",
+							"pm.test(\"Authentication credentials were not provided\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Authentication credentials were not provided.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 5e1ff8425fbd57f622a28d795f0438c8c711aa88",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "subject",
+							"value": "a",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "date",
+							"value": "2021-04-01T18:00:00Z",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "place",
+							"value": "asd",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "priority",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "advanced",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "pic",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/events/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"events",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View all events",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"event created\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"subject\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"date\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"place\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"priority\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"advanced\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"pic\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"user\");\r",
+							"});\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Status code name has Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(\"Unauthorized\");\r",
+							"});\r",
+							"pm.test(\"Authentication credentials were not provided\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Authentication credentials were not provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Unauthorized No credentials\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token header. No credentials provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string invalid token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token.\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 5e1ff8425fbd57f622a28d795f0438c8c711aa88",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/events/all",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"events",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View a specific event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"event created\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"subject\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"date\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"place\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"priority\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"advanced\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"pic\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"user\");\r",
+							"});\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Status code name has Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(\"Unauthorized\");\r",
+							"});\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"Status code name has Not Found\", function () {\r",
+							"    pm.response.to.have.status(\"Not Found\");\r",
+							"});\r",
+							"pm.test(\"Authentication credentials were not provided\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Authentication credentials were not provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Unauthorized No credentials\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token header. No credentials provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string invalid token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token.\");\r",
+							"});\r",
+							"pm.test(\"Requested event not exist\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"response\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"The requested event does not exist.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 5e1ff8425fbd57f622a28d795f0438c8c711aa88",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/events/4/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"events",
+						"4",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a specific event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"event created\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"subject\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"date\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"place\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"priority\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"advanced\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"pic\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"user\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Status code name has Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(\"Unauthorized\");\r",
+							"});\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"Status code name has Not Found\", function () {\r",
+							"    pm.response.to.have.status(\"Not Found\");\r",
+							"});\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Status code name has Bad Request\", function () {\r",
+							"    pm.response.to.have.status(\"Bad Request\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Authentication credentials were not provided\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Authentication credentials were not provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Unauthorized No credentials\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token header. No credentials provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string invalid token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token.\");\r",
+							"});\r",
+							"pm.test(\"Requested event not exist\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"response\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"The requested event does not exist.\");\r",
+							"});\r",
+							"pm.test(\"subject field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"subject\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"date field wrong format\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"date\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Datetime has wrong format. Use one of these formats instead: YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z].\");\r",
+							"});\r",
+							"pm.test(\"place field blank\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"place\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field may not be blank.\");\r",
+							"});\r",
+							"pm.test(\"priority field not valid value\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"priority\");\r",
+							"    pm.expect(pm.response.text()).to.include(\" is not a valid choice.\");\r",
+							"});\r",
+							"pm.test(\"Subject field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"subject\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"Date field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"date\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"Place field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"place\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});\r",
+							"pm.test(\"Priority field is required.\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"priority\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"This field is required.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 5e1ff8425fbd57f622a28d795f0438c8c711aa88",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "subject",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "date",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "place",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "priority",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "advanced",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "pic",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/events/1/update/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"events",
+						"1",
+						"update",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a specific event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name is OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"event deleted\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"response\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"The event was deleted.\");\r",
+							"});\r",
+							"pm.test(\"Requested event not exist\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"response\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"The requested event does not exist.\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Status code name has Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(\"Unauthorized\");\r",
+							"});\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"Status code name has Not Found\", function () {\r",
+							"    pm.response.to.have.status(\"Not Found\");\r",
+							"});\r",
+							"pm.test(\"Authentication credentials were not provided\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Authentication credentials were not provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string Unauthorized No credentials\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token header. No credentials provided.\");\r",
+							"});\r",
+							"pm.test(\"Body matches string invalid token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid token.\");\r",
+							"});\r",
+							"\r",
+							"//5e1ff8425fbd57f622a28d795f0438c8c711aa88"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 5e1ff8425fbd57f622a28d795f0438c8c711aa88",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/events/1/delete/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"events",
+						"1",
+						"delete",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
