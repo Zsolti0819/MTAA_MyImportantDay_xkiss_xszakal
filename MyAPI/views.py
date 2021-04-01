@@ -24,11 +24,11 @@ def registerUser(request):
         data["username"] = account.username
         token = Token.objects.get(user=account).key
         data["token"] = token
+        return Response(data, status=status.HTTP_200_OK)
 
     else:
         data = serializer.errors
-
-    return Response(data)
+        return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Odhlásenie sa
