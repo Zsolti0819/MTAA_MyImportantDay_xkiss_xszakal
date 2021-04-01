@@ -1,0 +1,1 @@
+pg_restore -h localhost -U postgres -d mtaa2021 < mtaa2021.sql
