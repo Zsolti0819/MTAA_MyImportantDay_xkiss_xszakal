@@ -2,6 +2,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -10,6 +11,13 @@ from .models import Event, Account
 from .serializers import AccountPropertiesSerializer, ChangePasswordSerializer
 from .serializers import EventSerializer
 from .serializers import RegisterSerializer
+
+
+class CustomObtainAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        return Response({'token': token.key, 'user': {'id': token.user_id}})
 
 
 # Registrácia
