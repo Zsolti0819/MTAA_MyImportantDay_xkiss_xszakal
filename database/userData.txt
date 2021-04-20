@@ -1,14 +1,6 @@
-username:	FirstUser
-password:	password
+username:	Zsolti
+password:	zs
 
-username:	SecondUser
-password:	heslo
+username:	Szaki
+password:	sz
 
-username:	ThirdUser
-password:	password
-
-username:	FourthUser
-password:	heslo
-
-username:	FifthUser
-password:	password
