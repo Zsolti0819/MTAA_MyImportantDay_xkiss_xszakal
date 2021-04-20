@@ -131,7 +131,7 @@ def showAllEvents(request):
     user = request.user
     event = Event.objects.filter(user=user.id).order_by('-id')
     serializer = EventSerializer(event, many=True)
-    return Response(serializer.data)
+    return Response({'events': serializer.data})
 
 
 # Zobraziť konkrétnu udalosť
