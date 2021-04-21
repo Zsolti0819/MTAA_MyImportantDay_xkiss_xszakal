@@ -12,6 +12,7 @@ from .serializers import UsernameSerializer, ChangePasswordSerializer, EmailAddr
     AccountPropertiesSerializer
 from .serializers import EventSerializer
 from .serializers import RegisterSerializer
+import datetime
 
 
 class CustomObtainAuthToken(ObtainAuthToken):
@@ -149,6 +150,22 @@ def showAllEvents(request):
     event = Event.objects.filter(user=user.id).order_by('-id')
     serializer = EventSerializer(event, many=True)
     return Response({'events': serializer.data})
+
+
+# Zobraziť všetky udalosti z daneho datumu
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def showEventByDate(request, dt):
+    dt = datetime.datetime.strptime(dt, '%Y-%m-%d')
+    user = request.user
+    try:
+        event = Event.objects.filter(user=user.id, date__year=dt.year, date__month=dt.month, date__day=dt.day)
+    except Event.DoesNotExist:
+        return Response({"response": "No such event exist for requested date."}, status=status.HTTP_404_NOT_FOUND)
+    serializer = EventSerializer(event, many=True)
+    return Response(serializer.data)
+
 
 
 # Zobraziť konkrétnu udalosť
