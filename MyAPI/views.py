@@ -8,7 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Event, Account
-from .serializers import AccountPropertiesSerializer, ChangePasswordSerializer
+from .serializers import UsernameSerializer, ChangePasswordSerializer, EmailAddressSerializer, \
+    AccountPropertiesSerializer
 from .serializers import EventSerializer
 from .serializers import RegisterSerializer
 
@@ -88,13 +89,29 @@ def changePassword(request):
 @api_view(['PUT'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def changeUsernameAndEmail(request):
+def changeUsername(request):
     try:
         account = request.user
     except Account.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = AccountPropertiesSerializer(account, data=request.data)
+    serializer = UsernameSerializer(account, data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data)
+
+
+# Zmeniť username alebo email k účtu
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def changeEmailAddress(request):
+    try:
+        account = request.user
+    except Account.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = EmailAddressSerializer(account, data=request.data)
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response(serializer.data)

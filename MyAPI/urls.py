@@ -9,7 +9,8 @@ urlpatterns = [
     path('logout/', views.logoutUser, name='logout'),
     path('account/', views.showAccountInfo, name='properties'),
     path('account/password/', views.changePassword, name='change-password'),
-    path('account/properties/', views.changeUsernameAndEmail, name='update'),
+    path('account/username/', views.changeUsername, name='update-username'),
+    path('account/email/', views.changeEmailAddress, name='update-email'),
 
 
     path('events/', views.createEvent, name="event-create"),

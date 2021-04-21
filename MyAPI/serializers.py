@@ -26,7 +26,19 @@ class RegisterSerializer(serializers.ModelSerializer):
 class AccountPropertiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ["username", "email"]
+        fields = ["username", 'email']
+
+
+class UsernameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ["username"]
+
+
+class EmailAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['email']
 
 
 class EventSerializer(serializers.ModelSerializer):
