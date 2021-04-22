@@ -164,7 +164,7 @@ def showEventByDate(request, dt):
     except Event.DoesNotExist:
         return Response({"response": "No such event exist for requested date."}, status=status.HTTP_404_NOT_FOUND)
     serializer = EventSerializer(event, many=True)
-    return Response(serializer.data)
+    return Response({'events':serializer.data})
 
 
 
