@@ -125,7 +125,7 @@ def createEvent(request):
     values["user"] = user.id
     values["pic"] = pic
     serializer = EventSerializer(data=values)
-
+    print(values)
     serializer.is_valid(raise_exception=True)
     serializer.save()
 
