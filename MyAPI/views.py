@@ -17,6 +17,8 @@ from .serializers import UsernameSerializer, ChangePasswordSerializer, EmailAddr
 @api_view(['POST'])
 def registerUser(request):
     serializer = RegisterSerializer(data=request.data)
+    values = request.POST.copy()
+    print(values)
     data = {}
     if serializer.is_valid():
         account = serializer.save()
@@ -29,6 +31,7 @@ def registerUser(request):
 
     else:
         data = serializer.errors
+        print(data)
         return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
