@@ -15,7 +15,7 @@ urlpatterns = [
 
     path('events/', views.createEvent, name="event-create"),
     path('events/all/', views.showAllEvents, name="event-list"),
-    path('events/<str:dt>/',views.showEventByDate, name="event-date"),
+    path('events/by_date/<str:dt>/',views.showEventByDate, name="event-date"),
     path('events/<str:pk>/', views.showEventByID, name="event-detail"),
     path('events/<str:pk>/update/', views.updateEvent, name="event-update"),
     path('events/<str:pk>/delete/', views.deleteEvent, name="event-delete"),
