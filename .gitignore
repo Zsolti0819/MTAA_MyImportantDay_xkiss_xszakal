@@ -1,6 +1,7 @@
 MyImportantDay/settings.py
 .idea/MyImportantDay.iml
 .idea/misc.xml
+venv
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/jetbrains,pycharm,python,django
