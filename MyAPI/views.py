@@ -125,10 +125,10 @@ def createEvent(request):
     except MultiValueDictKeyError:
         pic = None
 
-    values["user"] = user.id
     values["pic"] = pic
-    serializer = EventSerializer(data=values)
+    values["user"] = user.id
     print(values)
+    serializer = EventSerializer(data=values)
     serializer.is_valid(raise_exception=True)
     serializer.save()
 
@@ -200,10 +200,11 @@ def updateEvent(request, pk):
         pic = request.FILES["pic"]
     except MultiValueDictKeyError:
         pic = None
-    values["user"] = event.user.id
-    values["pic"] = pic
-    serializer = EventSerializer(instance=event, data=values)
 
+    values["pic"] = pic
+    values["user"] = event.user.id
+    print(values)
+    serializer = EventSerializer(instance=event, data=values)
     serializer.is_valid(raise_exception=True)
     serializer.save()
 
