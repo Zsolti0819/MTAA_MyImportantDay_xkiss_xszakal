@@ -27,6 +27,7 @@ def registerUser(request):
         data["username"] = account.username
         token = Token.objects.get(user=account).key
         data["token"] = token
+        print(data)
         return Response(data, status=status.HTTP_200_OK)
 
     else:
